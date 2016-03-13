@@ -18,15 +18,18 @@ app.post('/train', function(req, res){
   var url = req.body.url;
   var result = req.body.result;
   console.log("TRAIN REQUEST - URL: " + url + ", RESULT: " + result);
-  ML.train(url, result);
-  res.end();
+  ML.train(url, result, function(){
+    res.end();
+  });
 });
 
-app.get('/predict/:url', function(req, res){
-  var url = req.params.url;
-  console.log("PREDICT REQUEST - URL: " + JSON.stringify(url));
-  res.json({
-    "result" : ML.predict(url)
+app.post('/predict', function(req, res){
+  var url = req.body.url;
+  console.log("PREDICT REQUEST - URL: " + url);
+  ML.predict(url, function(result){
+    res.json({
+      "result" : result
+    });
   });
 });
 
