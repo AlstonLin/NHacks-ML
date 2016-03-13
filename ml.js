@@ -32,14 +32,13 @@ var trainingSet = [];
 module.exports = {
   // Note: actually just adds data
   train : function(url, result, callback){
-      getCalifaiData(url, function(data){
-        trainingSet.push({
-          input: data,
-          output: result
-        });
+    getCalifaiData(url, function(data){
+      trainingSet.push({
+        input: data,
+        output: result
       });
-      callback();
-    });  
+    });
+    callback();
   },
   predict : function(url, callback){
     getClarifaiData(url, function(data){
@@ -65,6 +64,10 @@ function saveParams(params){
 
 // SCRAPING
 function getClarifaiData(url, callback) {
-  http.get(CLARIFAI_HOST + CLARIFAI_COLOR_PATH + "?access_token=" + CLARIFAI_ACCESS_TOKEN + "&url=" + url, callback); 
+  http.get(CLARIFAI_HOST + CLARIFAI_COLOR_PATH + "?access_token=" + CLARIFAI_ACCESS_TOKEN + "&url=" + url, function(response){
+    // TEMP
+    console.log("KEYS: " + JSON.stringify(Object.keys(response)));
+    callback([1,1,1,1,1,1]);
+  }); 
 }
 
