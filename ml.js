@@ -2,6 +2,10 @@ var http = require('http');
 var CLARIFAI_HOST = "http://api.clarifai.com";
 var CLARIFAI_COLOR_PATH = "/v1/color/";
 var CLARIFAI_ACCESS_TOKEN = "eHXOOi5GS6bjEKICqHuKz5Rm3lQUIO";
+
+var curl = require('curlrequest');
+//var request = curl.request(default_options);
+
 module.exports = {
   train : function(url, result, callback){
   },
@@ -16,8 +20,9 @@ module.exports = {
 };
 
 function getClarifaiData(url, callback) {
-  http.get(CLARIFAI_HOST + CLARIFAI_COLOR_PATH + "?access_token=" + CLARIFAI_ACCESS_TOKEN + "&url=" + url, function(response){
-    JSON.stringify (response);
+  curl.request({url:CLARIFAI_HOST + CLARIFAI_COLOR_PATH + "?access_token=" + CLARIFAI_ACCESS_TOKEN + "&url=" + url}, function(err,response,body){
+    response = JSON.parse (response);
+
 
       console.log("TEMP: " + response);
       console.log("STATUS: " + response.status_code);
@@ -55,7 +60,7 @@ function getClarifaiData(url, callback) {
         }
       }
 
-      console.log (data);
+      console.log (JSON.stringify(data));
 
       callback(JSON.stringify(data));
   }); 
