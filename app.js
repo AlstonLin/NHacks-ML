@@ -33,6 +33,12 @@ app.post('/predict', function(req, res){
   });
 });
 
+app.post('/execute', function(req, res){
+  ML.executeTraining(function(){
+    res.end();
+  })
+});
+
 app.listen(PORT, function () {
   console.log('Example app listening on port ' + PORT + '!');
 });
