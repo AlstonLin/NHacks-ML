@@ -34,6 +34,7 @@ app.post('/predict', function(req, res){
 });
 
 app.post('/execute', function(req, res){
+  console.log("Training Request received");
   ML.executeTraining(function(){
     res.end();
   })
