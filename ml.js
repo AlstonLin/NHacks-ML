@@ -29,7 +29,7 @@ module.exports = {
   },
   predict : function(url, callback){
     getClarifaiData(url, function(data){
-      var result = network.activate(data);
+      var result = network.activate(JSON.parse(data));
       console.log("Prediction result: " + result);
       callback(result); 
     }); 
