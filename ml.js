@@ -10,19 +10,7 @@ var CLARIFAI_HOST = "http://api.clarifai.com";
 var CLARIFAI_COLOR_PATH = "/v1/color/";
 var CLARIFAI_ACCESS_TOKEN = "eHXOOi5GS6bjEKICqHuKz5Rm3lQUIO";
 
-
-// TEMP
-var temp = new Perceptron(1, 10, 1);
-var trainingSet = [{input: 0, output: 0}, {input: 1, output: 1}, {input: 2, output: 4}];
-var training = temp.trainer.train(trainingSet, {
-  iterations: 2000,
-    log: false,
-    error: 1e-6,
-    cost: Trainer.cost.MSE
-});
-console.log("Training: " + JSON.stringify(training));
-console.log("Predict: " + temp.activate([0]));
-// NEURAL NETWORK
+// Machine Learning
 var network = new Perceptron(6, 4, 1);
 var trainingSet = [];
 // EXPORTS
@@ -33,7 +21,7 @@ module.exports = {
   train : function(url, result, callback){
     getClarifaiData(url, function(data){
       trainingSet.push({
-        input: data,
+        input: JSON.parse(data),
         output: [result]
       });
     });
@@ -48,6 +36,7 @@ module.exports = {
   },
   executeTraining : function(callback){
     console.log("Training Started with training set of size " + trainingSet.length);
+    console.log("Training Data: " + JSON.stringify(trainingSet));
     network.trainer.train(trainingSet, {
       rate: .08,
       iterations: 3000,
@@ -101,7 +90,9 @@ function getClarifaiData(url, callback) {
           data.push (data[1]);
         } else {
           used.push (highestDensity);
-          data.push (colors[highestDensity].w3c.hex);
+          var hex = colors[highestDensity].w3c.hex;
+          hex = parseInt(hex.substring(1, hex.length), 16);
+          data.push (hex);
           data.push (colors[highestDensity].density);
         }
       }
